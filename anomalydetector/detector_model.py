@@ -94,7 +94,7 @@ class OutagePipeline:
             if model_residuals == "SVM":
                 svm_model = SVC(kernel='rbf')
                 self.residual_model = svm_model
-            if model_residuals == 'ensemble':
+            elif model_residuals == 'ensemble':
                 try : 
                     from xgboost import XGBClassifier
                 except ModuleNotFoundError:
