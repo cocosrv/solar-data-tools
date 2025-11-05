@@ -120,10 +120,10 @@ class OutagePipeline:
                         voting='soft'
                     )
                     self.residual_model = ensemble_model
-            if model_residuals == 'logisticRegression':
+            elif model_residuals == 'logisticRegression':
                 logreg_model = LogisticRegression(max_iter=1000)
                 self.residual_model = logreg_model
-            if model_residuals == 'XGBoost' :
+            elif model_residuals == 'XGBoost' :
                 try :
                     from xgboost import XGBClassifier  
                 except ModuleNotFoundError:
@@ -139,28 +139,28 @@ class OutagePipeline:
                                     use_label_encoder=False  
                                 )
                     self.residual_model = xgboost_model
-            if model_residuals == 'QDA' :
+            elif model_residuals == 'QDA' :
                 qda_model = QuadraticDiscriminantAnalysis()
                 self.residual_model = qda_model
-            if model_residuals == 'LDA' :
+            elif model_residuals == 'LDA' :
                 lda_model = LinearDiscriminantAnalysis()
                 self.residual_model = lda_model
-            if model_residuals == 'PCA+LDA' :
+            elif model_residuals == 'PCA+LDA' :
                 pca_lda = Pipeline([
                     ('pca', PCA(n_components=opt_n_default)),
                     ('lda', LinearDiscriminantAnalysis())
                     ])
                 self.residual_model = pca_lda
-            if model_residuals == 'PCA+QDA' :
-                pca_lda = Pipeline([
+            elif model_residuals == 'PCA+QDA' :
+                pca_qda = Pipeline([
                     ('pca', PCA(n_components=opt_n_default)),
                     ('qda', QuadraticDiscriminantAnalysis())
                     ])
                 self.residual_model = pca_qda
-            if model_residuals == 'PCA+logisticRegression' :
-                pca_lda = Pipeline([
+            elif model_residuals == 'PCA+logisticRegression' :
+                pca_logreg = Pipeline([
                     ('pca', PCA(n_components=opt_n_default)),
-                    ('qda', LogisticRegression())
+                    ('logreg', LogisticRegression())
                     ])
                 self.residual_model = pca_logreg
             else :
@@ -343,8 +343,7 @@ class OutagePipeline:
                            weight_quantiles=weight_quantiles,
                            quantiles=quantiles,
                            solver_quantiles=solver_quantiles,
-                           num_harmonics=num_harmonics,
-                           client=client)
+                           num_harmonics=num_harmonics)
         self.fit_linear(nlag = nlag,
                         num_basis=num_basis,
                         weight_linear=weight_linear,
